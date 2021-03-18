@@ -1,6 +1,6 @@
 * Intro
-
 J'ai tenté de manger du brocoli et c'était super bon. Après, avoir découpé les fleurettes il me restait le tronc et je ne voulais pas le jeter. J'en ai fait une soupe.
+
 
 * Ingredients
 (aromatiques & bouillon adaptables)
@@ -13,6 +13,7 @@ J'ai tenté de manger du brocoli et c'était super bon. Après, avoir découpé 
 | Origan                                     | 1 cuillère à café                   |
 | Poivre du moulin                           | 1 cuillère à café                   |
 
+
 * Matériel
 - Casserole (et plaque qui va bien)
 - Couteau éminceur
@@ -20,8 +21,7 @@ J'ai tenté de manger du brocoli et c'était super bon. Après, avoir découpé 
 - Mixeur
 
 
-* Etapes
-
+* Étapes
 ** Préparer les échalottes
 - Couper les deux extrémités
 - Retirer la tunique des échalottes
@@ -48,6 +48,7 @@ J'ai tenté de manger du brocoli et c'était super bon. Après, avoir découpé 
 - Passer la soupe au mixeur
 - Servir
 - Kiffer
+
 
 * Tags
 - Entrée
