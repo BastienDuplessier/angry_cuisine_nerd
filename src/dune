@@ -1,0 +1,4 @@
+ (executable
+  (name angry_generator)
+  (promote (until-clean))
+  (libraries preface yocaml yocaml_unix))

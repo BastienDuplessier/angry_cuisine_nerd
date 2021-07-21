@@ -1,0 +1,58 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  padding: 8px 32px;
+  background-color: #ffffff;
+  color: #111;
+}
+
+footer {
+  margin-top: 64px;
+  border-top: 2px solid #111;
+  padding: 24px 4px;
+}
+
+table,
+td,
+tr {
+  border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  padding: 4px;
+}
+
+tr {
+  background-color: #ffffff;
+}
+
+tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.tags {
+  margin: 32px 0;
+  padding: 0;
+}
+
+.tags > li {
+  display: inline-block;
+  background-color: #111;
+  color: #fff;
+  margin: 0 2px;
+  padding: 4px 8px;
+  font-size: 80%;
+}
+
+.tags > li::before {
+  content: "#";
+}

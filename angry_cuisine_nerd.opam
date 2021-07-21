@@ -1,0 +1,33 @@
+opam-version: "2.0"
+version: "dev"
+synopsis: "Recettes de cuisine pas vraiment modernes"
+maintainer: "bastien.duplessier@gmail.com"
+authors: [ "Bastien Duplessier <bastien.duplessier@gmail.com>" ]
+
+build: [
+  [ "dune" "subst" ]
+  [ "dune" "build" "-p" name "-j" jobs ]
+  [ "dune" "runtest" "-p" name ] {with-test}
+  [ "dune" "build" "@doc" "-p" name ] {with-doc}
+]
+
+license: "GPL-3.0-or-later"
+tags: [ "angry" "cuisine" "nerd" "ocaml" "preface" ]
+homepage: "https://github.com/BastienDuplessier/angry_cuisine_nerd"
+dev-repo: "git://github.com/BastienDuplessier/angry_cuisine_nerd.git"
+bug-reports: "https://github.com/BastienDuplessier/angry_cuisine_nerd/issues"
+
+depends: [
+  "ocaml" { >= "4.11.1" }
+  "dune" { >= "2.8" }
+  "preface" {pinned}
+  "yocaml" {pinned}
+  "yocaml_unix" {pinned}
+  "yaml"
+]
+
+pin-depends: [
+  ["preface.dev" "git+ssh://git@github.com/xvw/preface.git"]
+  ["yocaml.dev" "git+ssh://git@github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_unix.dev" "git+ssh://git@github.com/xhtmlboi/yocaml.git"]
+]
