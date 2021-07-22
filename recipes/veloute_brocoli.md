@@ -5,11 +5,11 @@ synopsis: J'ai tenté de manger du brocoli et c'était super bon. Après, avoir 
 
 ingredients:
   - name: Tronc de brocoli
-    qty: "1"
+    qty: 1
   - name: Échalottes
-    qty: "3"
+    quantity: 3
   - name: Bouillon de volaille
-    qty: "1"
+    qty: 1
   - name: Huile végétale
     qty: Pour faire revenir les échalottes
   - name: Eau (sauf si le bouillon est déjà liquide)

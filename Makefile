@@ -17,6 +17,7 @@ reload: clean clean-site
 	./src/angry_generator.exe
 
 install-deps:
+	opam pin add preface git+ssh://git@github.com/xvw/preface.git
 	opam pin add yocaml git+ssh://git@github.com/xhtmlboi/yocaml.git
 	opam pin add yocaml_unix git+ssh://git@github.com/xhtmlboi/yocaml.git
 	opam install . --deps-only

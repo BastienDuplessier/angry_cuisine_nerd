@@ -11,26 +11,22 @@ module Ingredient = struct
 
   let make name quantity = { name; quantity }
 
-  let fetch obj field =
-    (* This function is a clear proof that I have to improve
-       the Metadata API. Sorry for the noise. *)
-    let open Yocaml.Metadata.Rules in
+  let from_yaml field obj =
     let invalid_ingredient =
-      Yocaml.Error.(to_validate $ Invalid_metadata "Ingredients")
+      Yocaml.Error.(to_validate $ Invalid_metadata field)
     in
-    match fetch_field obj field with
-    | Some (`A result) ->
-      List.map
-        (fun potential_ingredient ->
-          is_object
-            potential_ingredient
-            (fun x ->
-              let open Yocaml.Validate.Applicative in
-              make <$> required_string x "name" <*> required_string x "qty")
-            invalid_ingredient)
-        result
-      |> Traverse.sequence
-    | _ -> invalid_ingredient
+    let open Yocaml.Validate in
+    Yaml.as_object
+      obj
+      (fun step ->
+        let open Applicative in
+        let open Alt in
+        make
+        <$> Yaml.(required string "name" step)
+        <*> Yaml.(
+              required as_string "qty" step
+              <|> required as_string "quantity" step))
+      invalid_ingredient
   ;;
 
   let to_mustache { name; quantity } =
@@ -50,28 +46,17 @@ module Step = struct
 
   let make name tasks = { name; tasks }
 
-  let fetch obj field =
-    (* This function is also a clear proof that I have to improve
-       the Metadata API. Sorry for the noise. *)
-    let open Yocaml.Metadata.Rules in
-    let invalid_step =
-      Yocaml.Error.(to_validate $ Invalid_metadata "Steps")
-    in
-    match fetch_field obj field with
-    | Some (`A result) ->
-      List.map
-        (fun potential_step ->
-          is_object
-            potential_step
-            (fun x ->
-              let open Yocaml.Validate.Applicative in
-              make
-              <$> required_string x "name"
-              <*> required_string_list x "tasks")
-            invalid_step)
-        result
-      |> Traverse.sequence
-    | _ -> invalid_step
+  let from_yaml field obj =
+    let invalid_step = Yocaml.Error.(to_validate $ Invalid_metadata field) in
+    let open Yocaml.Validate in
+    Yaml.as_object
+      obj
+      (fun step ->
+        let open Applicative in
+        make
+        <$> Yaml.(required string "name" step)
+        <*> Yaml.(required (list string) "tasks" step))
+      invalid_step
   ;;
 
   let to_mustache { name; tasks } =
@@ -100,20 +85,20 @@ module Recipe = struct
 
   let from_yaml yaml =
     let open Yocaml.Util in
-    let open Yocaml.Metadata.Rules in
-    is_object
+    let open Yocaml.Validate in
+    Yaml.as_object
       yaml
       (fun obj ->
-        let open Yocaml.Validate.Applicative in
+        let open Applicative in
         make
-        <$> required_string obj "name"
-        <*> required_string obj "synopsis"
-        <*> required_date obj "date"
-        <*> Ingredient.fetch obj "ingredients"
-        <*> optional_string_list obj "tools"
-        <*> Step.fetch obj "steps"
-        <*> optional_string_list obj "final_tasks"
-        <*> optional_string_list obj "tags")
+        <$> Yaml.(required string "name" obj)
+        <*> Yaml.(required string "synopsis" obj)
+        <*> Yaml.(required Yocaml.Metadata.Date.from_yaml "date" obj)
+        <*> Yaml.(required (list Ingredient.from_yaml) "ingredients" obj)
+        <*> Yaml.(with_default ~default:[] (list string) "tools" obj)
+        <*> Yaml.(required (list Step.from_yaml) "steps" obj)
+        <*> Yaml.(with_default ~default:[] (list string) "final_tasks" obj)
+        <*> Yaml.(with_default ~default:[] (list string) "tags" obj))
       Yocaml.Error.(to_validate $ Invalid_metadata "Recipe")
   ;;
 
