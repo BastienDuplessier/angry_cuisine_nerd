@@ -23,11 +23,15 @@ depends: [
   "preface" {pinned}
   "yocaml" {pinned}
   "yocaml_unix" {pinned}
+  "yocaml_yaml" {pinned}
+  "yocaml_markdown" {pinned}
   "yaml"
 ]
 
 pin-depends: [
-  ["preface.dev" "git+ssh://git@github.com/xvw/preface.git"]
-  ["yocaml.dev" "git+ssh://git@github.com/xhtmlboi/yocaml.git"]
-  ["yocaml_unix.dev" "git+ssh://git@github.com/xhtmlboi/yocaml.git"]
+  ["preface.dev" "git://github.com/xvw/preface.git"]
+  ["yocaml.dev" "git://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_unix.dev" "git://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_yaml.dev" "git://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_markdown.dev" "git://github.com/xhtmlboi/yocaml.git"]
 ]

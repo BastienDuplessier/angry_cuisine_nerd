@@ -11,22 +11,19 @@ module Ingredient = struct
 
   let make name quantity = { name; quantity }
 
-  let from_yaml field obj =
-    let invalid_ingredient =
-      Yocaml.Error.(to_validate $ Invalid_metadata field)
-    in
+  let from (type a) (module V : Yocaml.Metadata.VALIDABLE with type t = a) obj
+    =
     let open Yocaml.Validate in
-    Yaml.as_object
-      obj
+    let open V in
+    object_and
       (fun step ->
         let open Applicative in
         let open Alt in
         make
-        <$> Yaml.(required string "name" step)
-        <*> Yaml.(
-              required as_string "qty" step
-              <|> required as_string "quantity" step))
-      invalid_ingredient
+        <$> required_assoc string "name" step
+        <*> (required_assoc text "qty" step
+            <|> required_assoc text "quantity" step))
+      obj
   ;;
 
   let to_mustache { name; quantity } =
@@ -46,17 +43,17 @@ module Step = struct
 
   let make name tasks = { name; tasks }
 
-  let from_yaml field obj =
-    let invalid_step = Yocaml.Error.(to_validate $ Invalid_metadata field) in
+  let from (type a) (module V : Yocaml.Metadata.VALIDABLE with type t = a) obj
+    =
     let open Yocaml.Validate in
-    Yaml.as_object
-      obj
+    let open V in
+    object_and
       (fun step ->
         let open Applicative in
         make
-        <$> Yaml.(required string "name" step)
-        <*> Yaml.(required (list string) "tasks" step))
-      invalid_step
+        <$> required_assoc string "name" step
+        <*> required_assoc (list_of string) "tasks" step)
+      obj
   ;;
 
   let to_mustache { name; tasks } =
@@ -83,31 +80,34 @@ module Recipe = struct
     { name; synopsis; date; ingredients; tools; steps; final_tasks; tags }
   ;;
 
-  let from_yaml yaml =
-    let open Yocaml.Util in
-    let open Yocaml.Validate in
-    Yaml.as_object
-      yaml
-      (fun obj ->
-        let open Applicative in
-        make
-        <$> Yaml.(required string "name" obj)
-        <*> Yaml.(required string "synopsis" obj)
-        <*> Yaml.(required Yocaml.Metadata.Date.from_yaml "date" obj)
-        <*> Yaml.(required (list Ingredient.from_yaml) "ingredients" obj)
-        <*> Yaml.(with_default ~default:[] (list string) "tools" obj)
-        <*> Yaml.(required (list Step.from_yaml) "steps" obj)
-        <*> Yaml.(with_default ~default:[] (list string) "final_tasks" obj)
-        <*> Yaml.(with_default ~default:[] (list string) "tags" obj))
-      Yocaml.Error.(to_validate $ Invalid_metadata "Recipe")
-  ;;
-
-  let from_string = function
-    | None -> Yocaml.Error.(to_validate $ Invalid_metadata "Recipe")
+  let from_string (module V : Yocaml.Metadata.VALIDABLE) = function
+    | None -> Yocaml.Error.(to_validate $ Required_metadata [ "Recipe" ])
     | Some str ->
-      Result.fold ~ok:from_yaml ~error:(function `Msg e ->
-          Yocaml.Error.(to_validate $ Yaml e))
-      $ Yaml.of_string str
+      let open Yocaml.Validate in
+      let open Monad.Infix in
+      let open V in
+      V.from_string str
+      >>= object_and (fun obj ->
+              let open Applicative.Infix in
+              make
+              <$> required_assoc string "name" obj
+              <*> required_assoc string "synopsis" obj
+              <*> required_assoc
+                    (Yocaml.Metadata.Date.from (module V))
+                    "date"
+                    obj
+              <*> required_assoc
+                    (list_of $ Ingredient.from (module V))
+                    "ingredients"
+                    obj
+              <*> optional_assoc_or ~default:[] (list_of string) "tools" obj
+              <*> required_assoc (list_of $ Step.from (module V)) "steps" obj
+              <*> optional_assoc_or
+                    ~default:[]
+                    (list_of string)
+                    "final_tasks"
+                    obj
+              <*> optional_assoc_or ~default:[] (list_of string) "tags" obj)
   ;;
 
   let is_not_empty = function

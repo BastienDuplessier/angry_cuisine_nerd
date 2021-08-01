@@ -29,8 +29,8 @@ open struct
     create_file
       (into target $ get_recipe_url file)
       (track_binary
-      >>> read_file_with_metadata (module Meta.Recipe) file
-      >>> snd process_markdown
+      >>> Yocaml_yaml.read_file_with_metadata (module Meta.Recipe) file
+      >>> Yocaml_markdown.content_to_html ()
       >>> apply_as_template (module Meta.Recipe) "templates/recipe.html"
       >>> apply_as_template (module Meta.Recipe) "templates/layout.html"
       >>^ Stdlib.snd)
@@ -43,15 +43,17 @@ open struct
         (read_child_files "recipes/" (with_extension "md"))
         (fun source ->
           track_binary
-          >>> read_file_with_metadata (module Meta.Recipe) source
+          >>> Yocaml_yaml.read_file_with_metadata (module Meta.Recipe) source
           >>^ fun (x, _) -> x, get_recipe_url source)
         (fun x _ content -> x |> Meta.Recipes.make |> fun x -> x, content)
     in
     create_file
       (into target "index.html")
       (track_binary
-      >>> read_file_with_metadata (module Metadata.Page) "index.md"
-      >>> snd process_markdown
+      >>> Yocaml_yaml.read_file_with_metadata
+            (module Metadata.Page)
+            "index.md"
+      >>> Yocaml_markdown.content_to_html ()
       >>> recipes
       >>> apply_as_template (module Meta.Recipes) "templates/list.html"
       >>> apply_as_template (module Meta.Recipes) "templates/layout.html"
