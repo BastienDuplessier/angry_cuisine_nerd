@@ -26,8 +26,12 @@ module Ingredient = struct
       obj
   ;;
 
-  let to_mustache { name; quantity } =
-    `O [ "name", `String name; "qty", `String quantity ]
+  let inject
+      (type a)
+      (module D : Yocaml.Key_value.DESCRIBABLE with type t = a)
+      { name; quantity }
+    =
+    [ "name", D.string name; "qty", D.string quantity ]
   ;;
 end
 
@@ -56,11 +60,12 @@ module Step = struct
       obj
   ;;
 
-  let to_mustache { name; tasks } =
-    `O
-      [ "name", `String name
-      ; "tasks", `A (List.map (fun x -> `String x) tasks)
-      ]
+  let inject
+      (type a)
+      (module D : Yocaml.Key_value.DESCRIBABLE with type t = a)
+      { name; tasks }
+    =
+    [ "name", D.string name; "tasks", D.list $ List.map D.string tasks ]
   ;;
 end
 
@@ -110,25 +115,36 @@ module Recipe = struct
               <*> optional_assoc_or ~default:[] (list_of string) "tags" obj)
   ;;
 
-  let is_not_empty = function
-    | [] -> `Bool false
-    | _ -> `Bool true
+  let is_not_empty
+      (type a)
+      (module D : Yocaml.Key_value.DESCRIBABLE with type t = a)
+    = function
+    | [] -> D.boolean false
+    | _ -> D.boolean true
   ;;
 
-  let to_mustache
+  let inject
+      (type a)
+      (module D : Yocaml.Key_value.DESCRIBABLE with type t = a)
       { name; synopsis; date; ingredients; tools; steps; final_tasks; tags }
     =
-    [ "name", `String name
-    ; "synopsis", `String synopsis
-    ; "date", `O (Yocaml.Metadata.Date.to_mustache date)
-    ; "ingredients", `A (List.map Ingredient.to_mustache ingredients)
-    ; "tools", `A (List.map (fun x -> `String x) tools)
-    ; "steps", `A (List.map Step.to_mustache steps)
-    ; "final_tasks", `A (List.map (fun x -> `String x) final_tasks)
-    ; "tags", `A (List.map (fun x -> `String x) tags)
-    ; "has_tools", is_not_empty tools
-    ; "has_tags", is_not_empty tags
-    ; "has_final_tasks", is_not_empty final_tasks
+    [ "name", D.string name
+    ; "synopsis", D.string synopsis
+    ; "date", D.object_ (Yocaml.Metadata.Date.inject (module D) date)
+    ; ( "ingredients"
+      , D.list
+          (List.map
+             (fun x -> D.object_ $ Ingredient.inject (module D) x)
+             ingredients) )
+    ; "tools", D.list (List.map D.string tools)
+    ; ( "steps"
+      , D.list
+          (List.map (fun x -> D.object_ $ Step.inject (module D) x) steps) )
+    ; "final_tasks", D.list (List.map D.string final_tasks)
+    ; "tags", D.list (List.map D.string tags)
+    ; "has_tools", is_not_empty (module D) tools
+    ; "has_tags", is_not_empty (module D) tags
+    ; "has_final_tasks", is_not_empty (module D) final_tasks
     ]
   ;;
 end
@@ -146,12 +162,17 @@ module Recipes = struct
       recipes
   ;;
 
-  let to_mustache recipes =
+  let inject
+      (type a)
+      (module D : Yocaml.Key_value.DESCRIBABLE with type t = a)
+      recipes
+    =
     [ ( "recipes"
-      , `A
+      , D.list
           (List.map
              (fun (recipe, link) ->
-               `O (("link", `String link) :: Recipe.to_mustache recipe))
+               D.object_
+                 (("link", D.string link) :: Recipe.inject (module D) recipe))
              recipes) )
     ]
   ;;

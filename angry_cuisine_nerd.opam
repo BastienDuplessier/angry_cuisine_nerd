@@ -25,7 +25,7 @@ depends: [
   "yocaml_unix" {pinned}
   "yocaml_yaml" {pinned}
   "yocaml_markdown" {pinned}
-  "yaml"
+  "yocaml_mustache" {pinned}
 ]
 
 pin-depends: [
@@ -34,4 +34,5 @@ pin-depends: [
   ["yocaml_unix.dev" "git://github.com/xhtmlboi/yocaml.git"]
   ["yocaml_yaml.dev" "git://github.com/xhtmlboi/yocaml.git"]
   ["yocaml_markdown.dev" "git://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_mustache.dev" "git://github.com/xhtmlboi/yocaml.git"]
 ]
