@@ -1,8 +1,10 @@
-{{{body}}}
+{%- autoescape false -%}
+{{ body }}
+{% endautoescape -%}
 
 <!-- Funny note, <ol> looks a bit like lol. -->
 <ol reversed class="recipes">
-    {{#recipes}}
-    <li><a href="{{link}}">{{name}}</a></li>
-    {{/recipes}}
+    {% for recipe in recipes %}
+    <li><a href="{{ recipe.link }}">{{ recipe.name }}</a></li>
+    {% endfor %}
 </ol>

@@ -1,7 +1,7 @@
 open Yocaml
 module Data = Yocaml_yaml
 module Markup = Yocaml_markdown
-module Tpl = Yocaml_mustache
+module Tpl = Yocaml_jingoo
 
 open struct
   (* Defines the destination directory *)

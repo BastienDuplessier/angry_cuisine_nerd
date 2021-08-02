@@ -1,53 +1,53 @@
 <article>
     <a href="/index.html">Accueil</a>
-    <h2>{{name}}</h2>
+    <h2>{{ name }}</h2>
     <ul class="tags">
-    {{#tags}}<li>{{.}}</li>{{/tags}}
+        {% for tag in tags %}
+        <li>{{ tag  }}</li>
+        {% endfor %}
     </ul>
 
-    <p>{{synopsis}}</p>
+    <p>{{ synopsis }}</p>
 
     <section>
         <h3>Ingrédients</h3>
         <table>
-            {{#ingredients}}
+            {% for ingredient in ingredients %}
             <tr>
-                <td>{{name}}</td>
-                <td>{{qty}}</td>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.qty }}</td>
             </tr>
-            {{/ingredients}}
+            {% endfor %}
         </table>
     </section>
 
     <section>
         <h3>Matériel</h3>
         <ul>
-            {{#tools}}
-            <li>{{.}}</li>
-            {{/tools}}
+            {% for tool in tools %}
+            <li>{{ tool }}</li>
+            {% endfor %}
         </ul>
     </section>
 
     <section>
         <h3>Étapes</h3>
-
-        {{#steps}}
-        <h4>{{name}}</h4>
+        {% for step in steps %}
+        <h4>{{ step.name }}</h4>
         <ul>
-            {{#tasks}}
-            <li>{{.}}</li>
-            {{/tasks}}
+            {% for task in step.tasks %}
+            <li>{{ task }}</li>
+            {% endfor %}
         </ul>
-        {{/steps}}
+        {% endfor %}
 
-        {{#has_final_tasks}}
+        {% if has_final_tasks %}
         <h4>Fin de la recette</h4>
         <ul>
-            {{#final_tasks}}
-            <li>{{.}}</li>
-            {{/final_tasks}}
+            {% for task in final_tasks %}
+            <li>{{ task  }}</li>
+            {% endfor %}
         </ul>
-        {{/has_final_tasks}}
-
+        {% endif %}
     </section>
 </article>

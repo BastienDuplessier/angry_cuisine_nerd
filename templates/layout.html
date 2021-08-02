@@ -12,7 +12,9 @@
             <h1>Angry Cuisine Nerd</h1>
         </header>
         <main>
-            {{{body}}}
+            {%- autoescape false -%}
+            {{ body }}
+            {% endautoescape -%}
         </main>
         <footer>
             Ce très joli site a été conçu avec le non moins joli
