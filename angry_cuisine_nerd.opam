@@ -20,7 +20,7 @@ bug-reports: "https://github.com/BastienDuplessier/angry_cuisine_nerd/issues"
 depends: [
   "ocaml" { >= "4.11.1" }
   "dune" { >= "2.8" }
-  "preface" {pinned}
+  "preface" { >= "0.1.0" }
   "yocaml" {pinned}
   "yocaml_unix" {pinned}
   "yocaml_yaml" {pinned}
@@ -29,7 +29,6 @@ depends: [
 ]
 
 pin-depends: [
-  ["preface.dev" "git://github.com/xvw/preface.git"]
   ["yocaml.dev" "git://github.com/xhtmlboi/yocaml.git"]
   ["yocaml_unix.dev" "git://github.com/xhtmlboi/yocaml.git"]
   ["yocaml_yaml.dev" "git://github.com/xhtmlboi/yocaml.git"]

@@ -157,7 +157,7 @@ module Recipes = struct
       (fun (a, _) (b, _) ->
         let a_date = a.Recipe.date
         and b_date = b.Recipe.date in
-        let r = Yocaml.Metadata.Date.compare a_date b_date in
+        let r = Yocaml.Date.compare a_date b_date in
         if decreasing then ~-r else r)
       recipes
   ;;

@@ -17,13 +17,12 @@ reload: clean clean-site
 	./src/angry_generator.exe
 
 remove-deps:
-	opam remove preface yocaml yocaml_unix yocaml_yaml yocaml_markdown
+	opam remove yocaml yocaml_unix yocaml_yaml yocaml_markdown
 	opam remove yocaml_jingoo
-	opam pin remove preface yocaml yocaml_unix yocaml_yaml yocaml_markdown
+	opam pin remove yocaml yocaml_unix yocaml_yaml yocaml_markdown
 	opem pin remove yocaml_jingoo
 
 install-deps:
 	opam install . --deps-only
-	opam install preface
 	opam install yocaml
 	opam install yocaml_unix yocaml_yaml yocaml_markdown yocaml_jingoo
