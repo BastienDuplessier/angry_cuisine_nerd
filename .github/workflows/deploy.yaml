@@ -26,6 +26,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site/
+          publish_dir: ./_site/angry_cuisine_nerd
           publish_branch: gh-pages
           enable_jekyll: false

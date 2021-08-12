@@ -5,7 +5,7 @@ module Tpl = Yocaml_jingoo
 
 open struct
   (* Defines the destination directory *)
-  let target = "_site"
+  let target = "_site/angry_cuisine_nerd"
 
   let get_recipe_url source =
     let filename = basename $ replace_extension source "html" in
