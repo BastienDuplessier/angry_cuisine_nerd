@@ -48,7 +48,7 @@ open struct
           track_binary
           >>> Data.read_file_with_metadata (module Meta.Recipe) source
           >>^ fun (x, _) -> x, get_recipe_url source)
-        (fun x _ content -> x |> Meta.Recipes.make |> fun x -> x, content)
+        (fun x (_, content) -> x |> Meta.Recipes.make |> fun x -> x, content)
     in
     create_file
       (into target "index.html")
