@@ -20,7 +20,7 @@ jobs:
       - run: opam install . --deps-only --with-doc --with-test
       - run: opam install yocaml
       - run: opam install yocaml_unix yocaml_yaml yocaml_markdown yocaml_jingoo
-      - run: opam exec -- dune exec src/angry_generator.exe
+      - run: opam exec -- dune exec src/angry_generator.exe -- build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

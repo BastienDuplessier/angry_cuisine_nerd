@@ -20,6 +20,7 @@ bug-reports: "https://github.com/BastienDuplessier/angry_cuisine_nerd/issues"
 depends: [
   "ocaml" { >= "4.11.1" }
   "dune" { >= "2.8" }
+  "logs" {>= "0.7.0" }
   "preface" { >= "0.1.0" }
   "yocaml" {pinned}
   "yocaml_unix" {pinned}

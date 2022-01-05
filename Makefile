@@ -9,12 +9,15 @@ clean:
 clean-site:
 	rm -rf _site
 
-server:
-	python3 -m http.server --directory _site/
+fmt:
+	dune build @fmt --auto-promote
+
+server: build
+	./src/angry_generator.exe serve
 
 reload: clean clean-site
 	dune build
-	./src/angry_generator.exe
+	./src/angry_generator.exe build
 
 remove-deps:
 	opam remove yocaml yocaml_unix yocaml_yaml yocaml_markdown
