@@ -15,6 +15,6 @@ First, make sure you have OCaml ('>= 4.11') and Opam installed. Then after downl
 > If some updates to `preface` or `yocaml` are not taken into account, feel free to remove the dependencies (`opam remove preface yocaml yocaml_unix`) before re-running the command call.
 
 - Now you can run `make build` to build the generator. It will produce a binary `src/angry_generator.exe`.
-- Running `./src/angry_generator.exe` will build the website into `_site/_`.
-- You can use `make server` in order to launch the sad `python simple server` on the generated website.
-- Your site will be alive on http://localhost:8000.
+- Running `./src/angry_generator.exe build` will build the website into `_site/angry_cuisine_nerd`.
+- You can use `make server` in order to launch the sad `YOCaml simple server` on the generated website.
+- Your site will be alive on http://localhost:8000/angry_cuisine_nerd.
