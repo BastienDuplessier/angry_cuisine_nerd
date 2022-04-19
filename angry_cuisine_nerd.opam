@@ -30,9 +30,9 @@ depends: [
 ]
 
 pin-depends: [
-  ["yocaml.dev" "git://github.com/xhtmlboi/yocaml.git"]
-  ["yocaml_unix.dev" "git://github.com/xhtmlboi/yocaml.git"]
-  ["yocaml_yaml.dev" "git://github.com/xhtmlboi/yocaml.git"]
-  ["yocaml_markdown.dev" "git://github.com/xhtmlboi/yocaml.git"]
-  ["yocaml_jingoo.dev" "git://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml.dev" "git+https://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_unix.dev" "git+https://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_yaml.dev" "git+https://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_markdown.dev" "git+https://github.com/xhtmlboi/yocaml.git"]
+  ["yocaml_jingoo.dev" "git+https://github.com/xhtmlboi/yocaml.git"]
 ]
